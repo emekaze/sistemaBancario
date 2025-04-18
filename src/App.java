@@ -66,59 +66,57 @@ public class App {
 
                         break;
                     case 3:
+
                         System.out.print("\033\143");
                         System.out.println("===== Realizar saque =====");
-                        System.out.println("Digite o valor a ser sacado!");
+                        System.out.print("Digite o valor a ser sacado: ");
 
-                        int valorRestante = 0;
                         int valorSaque = 0;
                         int[] notas = {100, 50, 20, 10, 5, 2};
-                        int[] qtdNotas = new int[notas.length];
 
-                        while (valorValidacao == false) {
+                        while (!valorValidacao) {
                             if (input.hasNextInt()) {
                                 valorSaque = input.nextInt();
                                 input.nextLine();
 
-                                if (valorSaque % 2 != 0 && valorSaque < 5) {
-                                    System.out.println("ERRO! Notas disponiveis: 100, 50, 20, 10, 5, 2.");
-
-                                } else if (valorSaque <= 0) {
-                                    System.out.println("Digite um valor que seja maior que zero!");
+                                if (valorSaque <= 0) {
+                                    System.out.println("Digite um valor maior que zero!");
                                 } else if (valorSaque > saldoAtual) {
-                                    System.out.println("Impossivel sacar!! Saldo insuficiente");
+                                    System.out.println("Saldo insuficiente!");
+                                } else if (valorSaque % 2 != 0 && valorSaque < 5) {
+                                    System.out.println("Valor inválido para as notas disponíveis.");
                                 } else {
                                     valorValidacao = true;
                                     saldoAtual -= valorSaque;
                                     qtySaques++;
 
-                                    for (int i = 0; i < notas.length; i++) {
-                                        qtdNotas[i] = valorSaque / notas[i];
-                                        valorRestante %= notas[i];
+                                    int[] qtdNotas = new int[notas.length]; // reinicializa corretamente
+                                    int restante = valorSaque;
 
+                                    for (int i = 0; i < notas.length; i++) {
+                                        qtdNotas[i] = restante / notas[i];
+                                        restante = restante % notas[i]; // atualiza o valor restante
                                     }
 
                                     System.out.println("Notas entregues:");
-
                                     for (int i = 0; i < notas.length; i++) {
                                         if (qtdNotas[i] > 0) {
-                                            System.out.println("R$ " + notas[i] + ": " + qtdNotas[i] + " nota(s)");
+                                            System.out.printf("R$ %d: %d nota(s)\n", notas[i], qtdNotas[i]);
                                         }
                                     }
 
-                                    System.out.format("Saque de R$%d realizado com sucesso!\n", valorSaque);
-                                    System.out.format("Saldo atual: R$%.2f\n\n", saldoAtual);
+                                    System.out.printf("Saque de R$%d realizado com sucesso!\n", valorSaque);
+                                    System.out.printf("Saldo atual: R$%.2f\n", saldoAtual);
                                 }
-
                             } else {
-                                System.out.println("ERRO! Digite um valor numerico!");
+                                System.out.println("Erro: digite um número válido.");
+                                input.nextLine(); // limpa buffer
                             }
                         }
 
                         valorValidacao = false;
                         System.out.println("Pressione ENTER para voltar ao menu...");
                         input.nextLine();
-
                         break;
 
                     case 4:
